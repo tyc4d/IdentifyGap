@@ -1,6 +1,6 @@
 from flask import Flask,render_template,request
 from gcloud import storage
-import os
+import os,uuid
 
 app = Flask(__name__)
  
@@ -10,7 +10,6 @@ def upload_to_bucket(blob_name, path_to_file, bucket_name):
     bucket = storage_client.get_bucket(bucket_name)
     blob = bucket.blob(blob_name)
     blob.upload_from_filename(path_to_file)
-
     return blob.public_url
 
 @app.route('/')
@@ -20,10 +19,12 @@ def root():
 @app.route('/upload', methods = ['GET', 'POST'])
 def upload_file():
    if request.method == 'POST':
+      fn = ""
       f = request.files['file']
-      f.save(f.filename)
+      fn = f"{str(uuid.uuid1())}-{f.filename}"
+      f.save(f"/tmp/{fn}")
       
-      return '<p>成功上傳檔案 '+upload_to_bucket(f.filename,f"./{f.filename}","identifygap-upload")+'<p><a href="../" >Go Back</a>' 
+      return '<p>成功上傳檔案 '+upload_to_bucket(fn,f"/tmp/{fn}","identifygap-upload")+'<p><a href="../" >Go Back</a>' 
    else:
       return '<a href="../" >Go Back</a>'
    
