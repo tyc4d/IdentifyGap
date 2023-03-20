@@ -6,16 +6,11 @@ app = Flask(__name__)
  
 def upload_to_bucket(blob_name, path_to_file, bucket_name):
     """ Upload data to a bucket"""
-     
-    # Explicitly use service account credentials by specifying the private key
-    # file.
     storage_client = storage.Client.from_service_account_json('creds.json')
-    #print(buckets = list(storage_client.list_buckets())
     bucket = storage_client.get_bucket(bucket_name)
     blob = bucket.blob(blob_name)
     blob.upload_from_filename(path_to_file)
-    
-    #returns a public url
+
     return blob.public_url
 
 @app.route('/')
@@ -27,8 +22,8 @@ def upload_file():
    if request.method == 'POST':
       f = request.files['file']
       f.save(f.filename)
-      upload_to_bucket(f.filename,f"./{f.filename}","identifygap-upload")
-      return '成功上傳檔案' 
+      
+      return '<p>成功上傳檔案 '+upload_to_bucket(f.filename,f"./{f.filename}","identifygap-upload")+'<p><a href="../" >Go Back</a>' 
    else:
       return '<a href="../" >Go Back</a>'
    
