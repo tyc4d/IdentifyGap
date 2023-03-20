@@ -25,11 +25,9 @@ def root():
 @app.route('/upload', methods = ['GET', 'POST'])
 def upload_file():
    if request.method == 'POST':
-      if request.files['file'] == NULL:
-         return 'Fail'
       f = request.files['file']
       f.save(f.filename)
-      upload_to_bucket()
+      upload_to_bucket(f.filename,f"./{f.filename}","identifygap-upload")
       return '成功上傳檔案' 
    else:
       return '<a href="../" >Go Back</a>'
