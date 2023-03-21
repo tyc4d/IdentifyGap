@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>檢視結果 - 裂縫辨識系統</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <p></p>
+        <h1>檔案 {{id}} 分析結果</h1>
+        <p></p>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>檔案名稱</th>
+                    <th>建立時間</th>
+                    <th>檔案大小</th>
+                    <th>檔案類型</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in data %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.created_time}}</td>
+                    <td>{{ item.size }}</td>
+                    <td>{{ item.content_type}}</td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="{{ item.public_url}}">
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>
